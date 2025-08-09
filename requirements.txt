@@ -1,0 +1,11 @@
+coqui-tts
+torch
+torchaudio
+pandas
+numpy
+librosa
+soundfile
+scikit-learn
+matplotlib
+tensorboard
+pydub

@@ -55,9 +55,9 @@ def prepare_coqui_dataset():
 
             if os.path.exists(src_path):
                 # Convert filename to match Coqui TTS convention
-                # Ensure clean filename without double extensions
+                # Create clean filename without any extensions first
                 base_name = f"tw_{successful_conversions:06d}"
-                wav_filename = ensure_single_wav_extension(base_name)
+                wav_filename = f"{base_name}.wav"  # Add .wav extension once
                 dst_path = wavs_dir / wav_filename
 
                 # Load and convert audio to 22050Hz WAV
@@ -65,7 +65,6 @@ def prepare_coqui_dataset():
                     audio, sr = librosa.load(src_path, sr=22050)
                     # Normalize audio
                     audio = librosa.util.normalize(audio)
-                    # Ensure the destination path has only one .wav extension
                     sf.write(str(dst_path), audio, 22050)
 
                     # Clean text (remove special characters that might cause issues)
@@ -75,11 +74,9 @@ def prepare_coqui_dataset():
                     clean_text = ' '.join(clean_text.split())
 
                     # Add to metadata (format: filename|text|text)
-                    # Ensure filename has only one .wav extension
-                    clean_wav_filename = ensure_single_wav_extension(wav_filename)
-                    
+                    # Use the wav_filename directly (already has single .wav extension)
                     metadata.append(
-                        f"{clean_wav_filename}|{clean_text}|{clean_text}")
+                        f"{wav_filename}|{clean_text}|{clean_text}")
                     successful_conversions += 1
 
                 except Exception as audio_error:

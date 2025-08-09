@@ -16,7 +16,7 @@ from config import config
 def main():
     """Main training function"""
     print("Starting Coqui TTS training for Twi language...")
-    # print(f"Output directory: {config.output_path}")
+    print(f"Output directory: {config.output_path}")
 
     # Create output directory
     os.makedirs(config.output_path, exist_ok=True)
@@ -27,7 +27,7 @@ def main():
 
     # Initialize tokenizer
     print("Initializing tokenizer...")
-    tokenizer, config = TTSTokenizer.init_from_config(config)
+    tokenizer, _ = TTSTokenizer.init_from_config(config)
 
     # Load dataset
     print("Loading dataset samples...")

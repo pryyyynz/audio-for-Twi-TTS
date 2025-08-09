@@ -25,9 +25,9 @@ config = Tacotron2Config(
     test_delay_epochs=5,
     epochs=1000,
     save_step=1000,
-    checkpoint=True,
-    keep_all_best=True,
-    keep_after=10000,
+    # checkpoint=True,
+    # keep_all_best=True,
+    # keep_after=10000,
 
     # Text processing
     text_cleaner="phoneme_cleaners",
@@ -38,7 +38,7 @@ config = Tacotron2Config(
     # Logging and evaluation
     print_step=25,
     print_eval=True,
-    tb_model_param_stats=True,
+    # tb_model_param_stats=True,
 
     # Optimization
     mixed_precision=False,

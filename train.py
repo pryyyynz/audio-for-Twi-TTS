@@ -16,7 +16,7 @@ from config import config
 def main():
     """Main training function"""
     print("Starting Coqui TTS training for Twi language...")
-    print(f"Output directory: {config.output_path}")
+    # print(f"Output directory: {config.output_path}")
 
     # Create output directory
     os.makedirs(config.output_path, exist_ok=True)

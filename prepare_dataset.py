@@ -7,6 +7,14 @@ import soundfile as sf
 from tqdm import tqdm
 
 
+def ensure_single_wav_extension(filename):
+    """Ensure filename has only one .wav extension"""
+    # Remove all .wav extensions
+    base = filename.replace('.wav', '')
+    # Add exactly one .wav extension
+    return f"{base}.wav"
+
+
 def prepare_coqui_dataset():
     """
     Prepare the Common Voice Twi dataset for Coqui TTS training.
@@ -47,7 +55,9 @@ def prepare_coqui_dataset():
 
             if os.path.exists(src_path):
                 # Convert filename to match Coqui TTS convention
-                wav_filename = f"tw_{successful_conversions:06d}.wav"
+                # Ensure clean filename without double extensions
+                base_name = f"tw_{successful_conversions:06d}"
+                wav_filename = ensure_single_wav_extension(base_name)
                 dst_path = wavs_dir / wav_filename
 
                 # Load and convert audio to 22050Hz WAV
@@ -55,7 +65,8 @@ def prepare_coqui_dataset():
                     audio, sr = librosa.load(src_path, sr=22050)
                     # Normalize audio
                     audio = librosa.util.normalize(audio)
-                    sf.write(dst_path, audio, 22050)
+                    # Ensure the destination path has only one .wav extension
+                    sf.write(str(dst_path), audio, 22050)
 
                     # Clean text (remove special characters that might cause issues)
                     clean_text = text.replace('"', '').replace(
@@ -64,8 +75,11 @@ def prepare_coqui_dataset():
                     clean_text = ' '.join(clean_text.split())
 
                     # Add to metadata (format: filename|text|text)
+                    # Ensure filename has only one .wav extension
+                    clean_wav_filename = ensure_single_wav_extension(wav_filename)
+                    
                     metadata.append(
-                        f"{wav_filename}|{clean_text}|{clean_text}")
+                        f"{clean_wav_filename}|{clean_text}|{clean_text}")
                     successful_conversions += 1
 
                 except Exception as audio_error:
